@@ -3,14 +3,11 @@ pub fn execute() {
     let mut current_elf = 0;
     if let Ok(lines) = crate::utilities::read_lines("src/days/day_01/01-01.txt") {
         for line in lines {
-            if let Ok(ip) = line {
-                if ip == "" {
-                    current_elf += 1;
-                    file_lines.push(0);
-                }
-                else {
-                    file_lines[current_elf] = file_lines[current_elf] + ip.parse::<u32>().unwrap();
-                }
+            if line == "" {
+                current_elf += 1;
+                file_lines.push(0);
+            } else {
+                file_lines[current_elf] = file_lines[current_elf] + line.parse::<u32>().unwrap();
             }
         }
     }
@@ -21,12 +18,10 @@ pub fn execute() {
             max[2] = max[1];
             max[1] = max[0];
             max[0] = *elf;
-        }
-        else if elf > &max[1] {
+        } else if elf > &max[1] {
             max[2] = max[1];
             max[1] = *elf;
-        }
-        else if elf > &max[2] {
+        } else if elf > &max[2] {
             max[2] = *elf;
         }
     }

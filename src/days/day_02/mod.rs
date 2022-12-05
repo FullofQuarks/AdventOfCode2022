@@ -21,27 +21,27 @@ pub fn execute() {
 
     if let Ok(lines) = crate::utilities::read_lines("src/days/day_02/02.txt") {
         for line in lines {
-            if let Ok(game) = &line {
-                let mut chars = game.char_indices();
+            let mut chars = line.char_indices();
 
-                // nth consumes all chars to the index
-                let opponent_move = chars.nth(0).unwrap().1;
-                let raw_suggested_move = chars.nth(1).unwrap().1;
-                let suggested_move = choice_mapper.get(&raw_suggested_move).unwrap();
-                let mut game_points: u16 = 0;
+            // nth consumes all chars to the index
+            let opponent_move = chars.nth(0).unwrap().1;
+            let raw_suggested_move = chars.nth(1).unwrap().1;
+            let suggested_move = choice_mapper.get(&raw_suggested_move).unwrap();
+            let mut game_points: u16 = 0;
 
-                if &opponent_move == suggested_move {
-                    game_points += 3;
-                } else if game_rules.get(&suggested_move).unwrap() == &opponent_move {
-                    game_points += 6;
-                }
-                let current_game_score = choice_points.get(suggested_move).unwrap() + game_points;
-
-                games.push(current_game_score);
-                total_score += current_game_score;
+            if &opponent_move == suggested_move {
+                game_points += 3;
+            } else if game_rules.get(&suggested_move).unwrap() == &opponent_move {
+                game_points += 6;
             }
+            let current_game_score = choice_points.get(suggested_move).unwrap() + game_points;
+
+            games.push(current_game_score);
+            total_score += current_game_score;
         }
     }
 
-    println!("Total game score {}", &total_score);
+    println!("Part 1 Total game score {}", &total_score);
 }
+
+fn part_two() {}
