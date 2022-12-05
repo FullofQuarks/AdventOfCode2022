@@ -7,8 +7,9 @@ fn main() {
     std::io::stdin().read_line(&mut choice).expect("msg");
     println!("Executing Day {} of Santa Protocol...", &choice.trim());
     match &choice.trim()[..] {
-        "1" => crate::days::day_01::execute(),
-        "2" => crate::days::day_02::execute(),
+        "1" => days::day_01::execute(),
+        "2" => days::day_02::execute(),
+        "3" => days::day_03::execute(),
         _ => println!("None chosen. Exiting.")
     }
 }
