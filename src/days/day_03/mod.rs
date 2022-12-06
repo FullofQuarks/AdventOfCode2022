@@ -7,27 +7,35 @@ pub fn execute() {
     let alphabet_priority_map = get_alphabet_priority();
 
     let mut common_items: Vec<char> = Vec::new();
+    let mut part_two_rucksack_occurrences: [HashSet<char>; 3] = Default::default();
+    let mut number_in_group: u8 = 0;
+    let mut part_two_badges: Vec<char> = Vec::new();
     for rucksack in rucksacks {
-        let items = rucksack.chars();
-        let size_of_compartment: usize = rucksack.chars().count() / 2;
-        let mut first_compartment_items: HashSet<char> = HashSet::new();
-        for (index, item) in items.enumerate() {
-            if index < size_of_compartment {
-                first_compartment_items.insert(item);
-            } else {
-                if first_compartment_items.contains(&item) {
-                    common_items.push(item);
-                    break;
-                }
-            }
+        if number_in_group == 3 {
+            part_two_badges.push(get_common_letter_from_hashset_group(&part_two_rucksack_occurrences));
+            number_in_group = 0;
         }
+        part_two_rucksack_occurrences[number_in_group as usize].clear();
+
+        let items = rucksack.chars();
+        for item in items.into_iter() {
+            part_two_rucksack_occurrences[number_in_group as usize].insert(item);
+        }
+
+        number_in_group += 1;
     }
+    part_two_badges.push(get_common_letter_from_hashset_group(&part_two_rucksack_occurrences));
 
     let mut total_priority: u16 = 0;
+    let mut part_two_priority: u16 = 0;
     for common_item in common_items.iter() {
         total_priority += *alphabet_priority_map.get(common_item).unwrap() as u16;
     }
-    println!("Total priority: {}", total_priority);
+    for badge in part_two_badges.iter() {
+        part_two_priority += *alphabet_priority_map.get(badge).unwrap() as u16;
+    }
+    println!("Part 1 total priority: {}", total_priority);
+    println!("Part 2 total priority: {}", part_two_priority);
 }
 
 fn get_alphabet_priority() -> HashMap<char, u8> {
@@ -49,4 +57,15 @@ fn get_alphabet_priority() -> HashMap<char, u8> {
     }
 
     alphabet_priority_map
+}
+
+fn get_common_letter_from_hashset_group(group: &[HashSet<char>; 3]) -> char {
+    let first_second_intersect: HashSet<_> = group[0].intersection(&group[1]).map(|x: &char| *x).collect();
+    let intersect_third: HashSet<_> = first_second_intersect.intersection(&group[2]).collect();
+    let mut return_char: char = char::default();
+    for &a in intersect_third.iter() {
+        return_char = *a;
+    }
+
+    return_char
 }
