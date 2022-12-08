@@ -10,6 +10,7 @@ fn main() {
         "1" => days::day_01::execute(),
         "2" => days::day_02::execute(),
         "3" => days::day_03::execute(),
+        "4" => days::day_04::execute(),
         _ => println!("None chosen. Exiting.")
     }
 }
